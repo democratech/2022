@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:{{ nginx_proxy_version }}
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - reverse-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+{% if not nginx_proxy_letsencrypt_companion_enabled %}
+      - /opt/nginx/certs:/etc/nginx/certs
+{% else %}
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+{% endif %}
+{% if nginx_proxy_letsencrypt_companion_enabled %}
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion:{{ nginx_proxy_letsencrypt_companion_version }}
+    volumes:
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/acme.sh
+    environment:
+      DEFAULT_EMAIL: "{{ nginx_proxy_letsencrypt_companion_email }}"
+      NGINX_PROXY_CONTAINER: "nginx-proxy"
+{% endif %}
+
+volumes:
+  certs:
+  vhost:
+  html:
+
+networks:
+  reverse-proxy:

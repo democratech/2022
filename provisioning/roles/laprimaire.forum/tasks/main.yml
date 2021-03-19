@@ -1,0 +1,56 @@
+---
+
+- name: generate self-signed SSL certs
+  include_role:
+    name: laprimaire.ssl-certs
+  vars:
+    ssl_cert_fqdn: "{{ discourse_fqdn }}"
+  when: base_hostname != 'laprimaire.org'
+
+- name: create discourse directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/discourse
+    - /opt/discourse/docker
+    - /opt/discourse/postgresql-initdb.d
+    - /data/discourse/persistence/discourse/public/uploads
+
+- name: create discourse mounted directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+  loop:
+    - /data/discourse/postgresql
+    - /data/discourse/redis
+    - /data/discourse/persistence
+
+- name: copy discourse uploads
+  copy:
+    src: ./uploads/
+    dest: /data/discourse/persistence/discourse/public/uploads/
+
+- name: copy discourse database
+  copy:
+    src: ./postgresql-initdb.d/
+    dest: /opt/discourse/postgresql-initdb.d
+
+- name: check if 01-discourse.sql exists
+  stat:
+    path: /opt/discourse/postgresql-initdb.d/01-discourse.sql
+  register: discourse_sql
+
+- name: set discourse_skip_install
+  set_fact:
+    discourse_skip_install: "{{ discourse_sql.stat.exists }}"
+
+- name: template discourse docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/discourse/docker-compose.yml
+
+- name: start discourse
+  docker_compose:
+    project_src: /opt/discourse

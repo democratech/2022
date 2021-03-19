@@ -1,0 +1,9 @@
+---
+
+# https://hub.docker.com/r/jwilder/nginx-proxy/tags
+nginx_proxy_version: 0.8.0
+
+nginx_proxy_letsencrypt_companion_enabled: "{{ base_hostname != 'laprimaire.org.test' }}"
+# https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/tags
+nginx_proxy_letsencrypt_companion_version: 2.0.2
+nginx_proxy_letsencrypt_companion_email: admin@democratech.co

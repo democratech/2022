@@ -1,0 +1,7 @@
+---
+
+base_hostname: laprimaire.org
+
+discourse_postgresql_root_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_ROOT_PASSWORD') | default('postgres', true) }}"
+ghost_db_user: "{{ lookup('env', 'GHOST_DB_USER') | default('ghost', true) }}"
+ghost_db_password: "{{ lookup('env', 'GHOST_DB_PASSWORD') | default('ghost', true) }}"

@@ -1,0 +1,60 @@
+---
+
+- hosts:
+    - all
+  pre_tasks:
+    - name: update apt cache
+      apt:
+        update_cache: yes
+  roles:
+    - role: geerlingguy.pip
+      pip_install_packages: ['docker', 'docker-compose']
+    - role: geerlingguy.docker
+      docker_users: ["{{ ansible_ssh_user }}"]
+  tasks:
+    - block:
+      - name: Install fail2ban
+        apt:
+          package: fail2ban
+      - name: Ensure fail2ban is started
+        service:
+          name: fail2ban
+          state: started
+      tags:
+        - security
+    - block:
+      - name: Enable the firewall
+        ufw:
+          state: enabled
+          policy: deny
+      - name: Allow the SSH (22) port
+        ufw:
+          rule: allow
+          port: '22'
+      tags:
+        - security
+        - firewall
+
+- hosts:
+    - laprimaire_2022
+  roles:
+    - role: laprimaire.reverse-proxy
+    - role: laprimaire.blog
+      tags:
+        - blog
+    - role: laprimaire.forum
+      tags:
+        - forum
+  tasks:
+    - block:
+      - name: Allow the HTTP (80) port
+        ufw:
+          rule: allow
+          port: '80'
+      - name: Allow the HTTPS (443) port
+        ufw:
+          rule: allow
+          port: '443'
+      tags:
+        - security
+        - firewall

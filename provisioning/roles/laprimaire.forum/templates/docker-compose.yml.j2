@@ -1,0 +1,67 @@
+version: '3.3'
+
+services:
+  postgresql:
+    image: 'docker.io/bitnami/postgresql:{{ discourse_postresql_version }}'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRESQL_POSTGRES_PASSWORD={{ discourse_postgresql_root_password }}
+    volumes:
+      - '/data/discourse/postgresql:/bitnami/postgresql'
+      - '/opt/discourse/postgresql-initdb.d:/docker-entrypoint-initdb.d'
+    networks:
+      - discourse
+  redis:
+    image: 'docker.io/bitnami/redis:{{ discourse_redis_version }}'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - '/data/discourse/redis:/bitnami'
+    networks:
+      - discourse
+  discourse:
+    image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
+    depends_on:
+      - postgresql
+      - redis
+    volumes:
+      - '/data/discourse/persistence:/bitnami'
+    environment:
+      - POSTGRESQL_HOST=postgresql
+      - POSTGRESQL_ROOT_USER=postgres
+      - POSTGRESQL_ROOT_PASSWORD={{ discourse_postgresql_root_password }}
+      - DISCOURSE_SKIP_INSTALL={{ discourse_skip_install | ternary('yes', 'no') }}
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME={{ discourse_postresql_database }}
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_USERNAME=postgres
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_PASSWORD={{ discourse_postgresql_root_password }}
+      - DISCOURSE_POSTGRESQL_NAME={{ discourse_postresql_database }}
+      - DISCOURSE_POSTGRESQL_USERNAME=postgres
+      - DISCOURSE_POSTGRESQL_PASSWORD={{ discourse_postgresql_root_password }}
+      - DISCOURSE_HOSTNAME={{ discourse_fqdn }}
+      - VIRTUAL_HOST={{ discourse_fqdn }}
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST={{ discourse_fqdn }}
+    networks:
+      - discourse
+      - nginx_reverse-proxy
+  sidekiq:
+    image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
+    depends_on:
+      - discourse
+    volumes:
+      - '/data/discourse/persistence:/bitnami'
+    command: 'nami start --foreground discourse-sidekiq'
+    environment:
+      - DISCOURSE_POSTGRESQL_NAME={{ discourse_postresql_database }}
+      - DISCOURSE_POSTGRESQL_USERNAME=postgres
+      - DISCOURSE_POSTGRESQL_PASSWORD={{ discourse_postgresql_root_password }}
+      - DISCOURSE_HOST=discourse
+      - DISCOURSE_PORT=3000
+      - DISCOURSE_HOSTNAME={{ discourse_fqdn }}
+    networks:
+      - discourse
+
+networks:
+  discourse:
+  nginx_reverse-proxy:
+    external: true

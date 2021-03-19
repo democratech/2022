@@ -1,0 +1,44 @@
+version: '3.3'
+
+services:
+  ghost:
+    image: ghost:{{ ghost_version }}-alpine
+    restart: unless-stopped
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      database__client: "mysql"
+      database__connection__host: "db"
+      database__connection__user: "{{ ghost_db_user }}"
+      database__connection__password: "{{ ghost_db_password }}"
+      database__connection__database: "{{ ghost_db_database }}"
+      # this url value is just an example, and is likely wrong for your environment!
+      url: "{{ ghost_url }}"
+      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+      #NODE_ENV: development
+      VIRTUAL_HOST: "{{ ghost_fqdn }}"
+      VIRTUAL_PORT: "2368"
+      LETSENCRYPT_HOST: "{{ ghost_fqdn }}"
+    volumes:
+      - /data/ghost/content:/var/lib/ghost/content
+    networks:
+      - nginx_reverse-proxy
+      - ghost
+  db:
+    image: mysql:8.0.23
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "root" # FIXME
+      MYSQL_USER: "{{ ghost_db_user }}"
+      MYSQL_PASSWORD: "{{ ghost_db_password }}"
+      MYSQL_DATABASE: "{{ ghost_db_database }}"
+    volumes:
+      - /data/ghost/mysql:/var/lib/mysql
+      - /opt/ghost/mysql-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - ghost
+
+networks:
+  ghost:
+  nginx_reverse-proxy:
+    external: true

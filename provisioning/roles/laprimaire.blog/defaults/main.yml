@@ -1,0 +1,8 @@
+---
+
+ghost_version: 4
+ghost_fqdn: "2022.{{ base_hostname }}"
+ghost_url: "http://{{ ghost_fqdn }}"
+ghost_db_user: ghost
+ghost_db_password: ghost
+ghost_db_database: ghost_prod

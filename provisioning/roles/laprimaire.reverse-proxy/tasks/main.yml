@@ -1,0 +1,18 @@
+---
+
+- name: create nginx directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/nginx
+    - /opt/nginx/certs
+
+- name: template nginx docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/nginx/docker-compose.yml
+
+- name: start nginx reverse-proxy
+  docker_compose:
+    project_src: /opt/nginx

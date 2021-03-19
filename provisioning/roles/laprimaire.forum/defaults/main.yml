@@ -1,0 +1,12 @@
+---
+
+# https://hub.docker.com/r/bitnami/discourse/tags
+discourse_version: 2.6.3
+discourse_fqdn: "org.{{ base_hostname }}"
+discourse_skip_install: true
+# https://hub.docker.com/r/bitnami/postgresql/tags
+discourse_postresql_version: 12
+discourse_postgresql_root_password: postgres
+discourse_postresql_database: discourse
+# https://hub.docker.com/r/bitnami/redis/tags
+discourse_redis_version: 6.2
