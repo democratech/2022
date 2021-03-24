@@ -13,7 +13,6 @@
     state: directory
   loop:
     - /opt/discourse
-    - /opt/discourse/docker
     - /opt/discourse/postgresql-initdb.d
     - /data/discourse/persistence/discourse/public/uploads
 

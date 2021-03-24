@@ -5,8 +5,16 @@ discourse_version: 2.6.3
 discourse_fqdn: "org.{{ base_hostname }}"
 discourse_skip_install: true
 # https://hub.docker.com/r/bitnami/postgresql/tags
-discourse_postresql_version: 12
-discourse_postgresql_root_password: postgres
-discourse_postresql_database: discourse
+discourse_postrgesql_version: 12
+discourse_postgresql_password: postgres
+discourse_postrgesql_database: discourse
 # https://hub.docker.com/r/bitnami/redis/tags
 discourse_redis_version: 6.2
+
+discourse_smtp_host: smtp.eu.mailgun.org
+discourse_smtp_port: 587
+discourse_smtp_user: postmaster@org.laprimaire.org
+# discourse_smtp_password:
+discourse_smtp_tls: true
+
+discourse_redis_password: redis

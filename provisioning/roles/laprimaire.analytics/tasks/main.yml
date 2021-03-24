@@ -1,0 +1,34 @@
+---
+
+- name: generate self-signed SSL certs
+  include_role:
+    name: laprimaire.ssl-certs
+  vars:
+    ssl_cert_fqdn: "{{ matomo_fqdn }}"
+  when: base_hostname != 'laprimaire.org'
+
+- name: create matomo directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/matomo
+    - /data/matomo/
+
+- name: create matomo mounted directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+  loop:
+    - /data/matomo/mariadb
+    - /data/matomo/data
+
+- name: template matomo docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/matomo/docker-compose.yml
+
+- name: start matomo
+  docker_compose:
+    project_src: /opt/matomo

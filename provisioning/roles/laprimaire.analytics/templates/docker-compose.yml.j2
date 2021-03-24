@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  mariadb:
+    image: "docker.io/bitnami/mariadb:{{ matomo_database_version }}"
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: "{{ matomo_database_root_password }}"
+      MARIADB_USER: "{{ matomo_database_user }}"
+      MARIADB_PASSWORD: "{{ matomo_database_password }}"
+      MARIADB_DATABASE: "{{ matomo_database_database }}"
+      # Flag necessary for the database max allowed packet check
+      # https://matomo.org/faq/troubleshooting/faq_183/
+      MARIADB_EXTRA_FLAGS: "--max_allowed_packet=64MB"
+    volumes:
+      - "/data/matomo/mariadb:/bitnami/mariadb"
+    networks:
+      - matomo
+  matomo:
+    image: "docker.io/bitnami/matomo:{{ matomo_version }}"
+    restart: unless-stopped
+    environment:
+      MATOMO_DATABASE_HOST: "mariadb"
+      MATOMO_DATABASE_PORT_NUMBER: 3306
+      MATOMO_DATABASE_USER: "{{ matomo_database_user }}"
+      MATOMO_DATABASE_PASSWORD: "{{ matomo_database_password }}"
+      MATOMO_DATABASE_NAME: "{{ matomo_database_database }}"
+      MATOMO_USERNAME: "{{ matomo_user }}"
+      MATOMO_PASSWORD: "{{ matomo_password }}"
+      MATOMO_EMAIL: "{{ matomo_email }}"
+      MATOMO_WEBSITE_NAME: "{{ matomo_website_name }}"
+      MATOMO_WEBSITE_HOST: "{{ matomo_website_host }}"
+      VIRTUAL_HOST: "{{ matomo_fqdn }}"
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: "{{ matomo_fqdn }}"
+    volumes:
+      - "/data/matomo/data:/bitnami/matomo"
+    networks:
+      - matomo
+      - nginx_reverse-proxy
+    depends_on:
+      - mariadb
+
+networks:
+  matomo:
+  nginx_reverse-proxy:
+    external: true

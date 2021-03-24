@@ -29,6 +29,7 @@ Edit your hosts file to add the following entries:
 ```
 192.168.142.2    2022.laprimaire.org.test
 192.168.142.2    org.laprimaire.org.test
+192.168.142.2    analytics.laprimaire.org.test
 ```
 
 - On Windows, open Notepad as an Administrator and open/edit `C:\windows\system32\drivers\etc\hosts`.
@@ -40,9 +41,19 @@ Edit your hosts file to add the following entries:
 |-|-|-|
 | `LAPRIMAIRE_2022_HOST` | no | The FQDN/IP of the LaPrimaire.org 2022 server. |
 | `LAPRIMAIRE_2022_SSH_KEY` | no | The full path to the SSH key for the LaPrimaire.org 2022 server. |
-| `DISCOURSE_POSTGRESQL_ROOT_PASSWORD` | no | The password for the PostgreSQL user used by Discourse. |
-| `GHOST_DB_USER` | no | The database user used by Ghost. |
-| `GHOST_DB_PASSWORD` | no | The database password used by Ghost. |
+| `DISCOURSE_POSTGRESQL_PASSWORD` | no | The password for the PostgreSQL user used by Discourse. |
+| `DISCOURSE_SMTP_HOST` | no | The SMTP host used by Discourse. |
+| `DISCOURSE_SMTP_PORT` | no | The SMTP port used by Discourse. |
+| `DISCOURSE_SMTP_USER` | no | The SMTP user used by Discourse. |
+| `DISCOURSE_SMTP_PASSWORD` | no | The SMTP password used by Discourse. |
+| `DISCOURSE_SMTP_TLS` | no | Whether Discourse must use SMTP over TLS (`yes` or `no`). |
+| `DISCOURSE_REDIS_PASSWORD` | no | The Redis password used by Discourse. |
+| `GHOST_DATABASE_USER` | no | The database user used by Ghost. |
+| `GHOST_DATABASE_PASSWORD` | no | The database password used by Ghost. |
+| `MATOMO_DATABASE_USER` | no | The Matomo database username. |
+| `MATOMO_DATABASE_PASSWORD` | no | The Matomo database password. |
+| `MATOMO_USER` | no | The Matomo admin username. |
+| `MATOMO_PASSWORD` | no | The Matomo admin password. |
 
 ### 1.4. Provision the development VMs
 

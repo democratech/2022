@@ -1,0 +1,16 @@
+---
+
+matomo_version: 4.2.1
+matomo_fqdn: "analytics.{{ base_hostname }}"
+
+matomo_database_version: 10.3-debian-10
+matomo_database_root_password: "root"
+matomo_database_user: "matomo"
+matomo_database_password: "matomo"
+matomo_database_database: "matomo"
+
+matomo_user: "admin"
+matomo_password: "admin_42"
+matomo_email: "admin@democratech.co"
+matomo_website_name: "LaPrimaire.org 2022"
+matomo_website_host: "2022.{{ base_hostname }}"

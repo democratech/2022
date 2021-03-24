@@ -45,6 +45,9 @@
     - role: laprimaire.forum
       tags:
         - forum
+    - role: laprimaire.analytics
+      tags:
+        - analytics
   tasks:
     - block:
       - name: Allow the HTTP (80) port

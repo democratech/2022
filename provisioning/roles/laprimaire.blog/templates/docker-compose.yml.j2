@@ -8,8 +8,8 @@ services:
       # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
       database__client: "mysql"
       database__connection__host: "db"
-      database__connection__user: "{{ ghost_db_user }}"
-      database__connection__password: "{{ ghost_db_password }}"
+      database__connection__user: "{{ ghost_database_user }}"
+      database__connection__password: "{{ ghost_database_password }}"
       database__connection__database: "{{ ghost_db_database }}"
       # this url value is just an example, and is likely wrong for your environment!
       url: "{{ ghost_url }}"
@@ -28,9 +28,9 @@ services:
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: "root" # FIXME
-      MYSQL_USER: "{{ ghost_db_user }}"
-      MYSQL_PASSWORD: "{{ ghost_db_password }}"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: "{{ ghost_database_user }}"
+      MYSQL_PASSWORD: "{{ ghost_database_password }}"
       MYSQL_DATABASE: "{{ ghost_db_database }}"
     volumes:
       - /data/ghost/mysql:/var/lib/mysql

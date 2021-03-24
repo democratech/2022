@@ -2,6 +2,19 @@
 
 base_hostname: laprimaire.org
 
-discourse_postgresql_root_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_ROOT_PASSWORD') | default('postgres', true) }}"
-ghost_db_user: "{{ lookup('env', 'GHOST_DB_USER') | default('ghost', true) }}"
-ghost_db_password: "{{ lookup('env', 'GHOST_DB_PASSWORD') | default('ghost', true) }}"
+discourse_postgresql_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_PASSWORD') | default('postgres', true) }}"
+discourse_smtp_host: "{{ lookup('env', 'DISCOURSE_SMTP_HOST') }}"
+discourse_smtp_port: "{{ lookup('env', 'DISCOURSE_SMTP_PORT') | default('587', true) }}"
+discourse_smtp_user: "{{ lookup('env', 'DISCOURSE_SMTP_USER') }}"
+discourse_smtp_password: "{{ lookup('env', 'DISCOURSE_SMTP_PASSWORD') }}"
+discourse_smtp_tls: "{{ lookup('env', 'DISCOURSE_SMTP_TLS') | default('true', true) }}"
+discourse_redis_password: "{{ lookup('env', 'DISCOURSE_REDIS_PASSWORD') | default('redis', true) }}"
+
+ghost_database_user: "{{ lookup('env', 'GHOST_DATABASE_USER') | default('ghost', true) }}"
+ghost_database_password: "{{ lookup('env', 'GHOST_DATABASE_PASSWORD') | default('ghost', true) }}"
+
+matomo_database_root_password: "{{ lookup('env', 'MATOMO_DATABASE_ROOT_PASSWORD') | default('root', true) }}"
+matomo_database_username: "{{ lookup('env', 'MATOMO_DATABASE_USER') | default('admin', true) }}"
+matomo_database_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default('admin_42', true) }}"
+matomo_user: "{{ lookup('env', 'MATOMO_USER') | default('admin', true) }}"
+matomo_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default('admin_42', true) }}"

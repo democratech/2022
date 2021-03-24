@@ -1,4 +1,2 @@
-files/mysql
-files/content/*
-!files/content/.gitkeep
 *.sql
+files/content/images
