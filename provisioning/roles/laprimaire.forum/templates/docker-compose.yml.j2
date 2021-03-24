@@ -47,6 +47,7 @@ services:
       SMTP_USER: "{{ discourse_smtp_user }}"
       SMTP_PASSWORD: "{{ discourse_smtp_password }}"
       SMTP_TLS: "{{ discourse_smtp_tls | ternary('yes', 'no') }}"
+      SMTP_AUTH: "{{ discourse_smtp_auth }}"
 {% endif %}
       VIRTUAL_HOST: "{{ discourse_fqdn }}"
       VIRTUAL_PORT: "3000"
@@ -69,12 +70,14 @@ services:
       DISCOURSE_HOST: "discourse"
       DISCOURSE_PORT: "3000"
       DISCOURSE_HOSTNAME: "{{ discourse_fqdn }}"
+      REDIS_PASSWORD: "{{ discourse_redis_password }}"
 {% if discourse_smtp_host is defined %}
       SMTP_HOST: "{{ discourse_smtp_host }}"
       SMTP_PORT: "{{ discourse_smtp_port }}"
       SMTP_USER: "{{ discourse_smtp_user }}"
       SMTP_PASSWORD: "{{ discourse_smtp_password }}"
       SMTP_TLS: "{{ discourse_smtp_tls | ternary('yes', 'no') }}"
+      SMTP_AUTH: "{{ discourse_smtp_auth }}"
 {% endif %}
     networks:
       - discourse

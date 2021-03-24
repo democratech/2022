@@ -16,5 +16,6 @@ discourse_smtp_port: 587
 discourse_smtp_user: postmaster@org.laprimaire.org
 # discourse_smtp_password:
 discourse_smtp_tls: true
+discourse_smtp_auth: plain
 
 discourse_redis_password: redis
