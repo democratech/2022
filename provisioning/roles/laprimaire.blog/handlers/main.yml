@@ -1,0 +1,6 @@
+---
+
+- name: restart ghost
+  shell: docker-compose restart
+  args:
+    chdir: /opt/ghost

@@ -27,6 +27,13 @@
   copy:
     src: ./content/
     dest: /data/ghost/content
+  notify: restart ghost
+
+- name: template analytics.js
+  template:
+    src: analytics.js.j2
+    dest: /data/ghost/content/themes/lyra/assets/js/analytics.js
+  notify: restart ghost
 
 - name: copy ghost database
   copy:
