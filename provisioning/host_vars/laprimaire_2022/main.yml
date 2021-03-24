@@ -3,8 +3,6 @@
 base_hostname: laprimaire.org
 
 discourse_postgresql_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_PASSWORD') | default('postgres', true) }}"
-discourse_smtp_host: "{{ lookup('env', 'DISCOURSE_SMTP_HOST') }}"
-discourse_smtp_port: "{{ lookup('env', 'DISCOURSE_SMTP_PORT') | default('587', true) }}"
 discourse_smtp_user: "{{ lookup('env', 'DISCOURSE_SMTP_USER') }}"
 discourse_smtp_password: "{{ lookup('env', 'DISCOURSE_SMTP_PASSWORD') }}"
 discourse_smtp_tls: "{{ lookup('env', 'DISCOURSE_SMTP_TLS') | default('true', true) }}"
