@@ -1,0 +1,182 @@
+---
+
+grafana_version: 7.4.5
+
+# Should we use the provisioning capability when possible (provisioning require grafana >= 5.0)
+grafana_use_provisioning: true
+grafana_provisioning_synced: true
+
+grafana_instance: "{{ ansible_fqdn | default(ansible_host) | default(inventory_hostname) }}"
+
+grafana_conf_dir: "/data/grafana/config"
+grafana_logs_dir: "/data/grafana/logs"
+grafana_data_dir: "/data/grafana/data"
+grafana_dashboards_dir: "dashboards"
+
+grafana_default_home_dashboard: "node-exporter-full_rev22.json"
+
+grafana_address: "0.0.0.0"
+grafana_port: 3000
+# To enable the use of ports below 1024 for unprivileged processes linux needs to set CAP_NET_BIND_SERVICE.
+# This has some security implications, and should be a conscious choice.
+# Get informed by reading: http://man7.org/linux/man-pages/man7/capabilities.7.html
+grafana_cap_net_bind_service: false
+
+# External Grafana address. Variable maps to "root_url" in grafana server section
+grafana_url: "http://{{ grafana_address }}:{{ grafana_port }}"
+grafana_api_url: "{{ grafana_url }}"
+grafana_domain: "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}"
+
+# Additional options for grafana "server" section
+# This section WILL omit options for: http_addr, http_port, domain, and root_url, as those settings are set by variables listed before
+grafana_server:
+  protocol: http
+  enforce_domain: false
+  socket: ""
+  cert_key: ""
+  cert_file: ""
+  enable_gzip: false
+  static_root_path: public
+  router_logging: false
+  serve_from_sub_path: false
+
+grafana_admin_user: "admin"
+grafana_admin_password: "admin"
+
+# Variables correspond to ones in grafana.ini configuration file
+# Security
+grafana_security:
+  admin_user: "{{ grafana_admin_user }}"
+  admin_password: "{{ grafana_admin_password }}"
+#  secret_key: ""
+#  login_remember_days: 7
+#  cookie_username: grafana_user
+#  cookie_remember_name: grafana_remember
+#  disable_gravatar: true
+#  data_source_proxy_whitelist:
+
+# Database setup
+grafana_database:
+  type: sqlite3
+#  host: 127.0.0.1:3306
+#  name: grafana
+#  user: root
+#  password: ""
+#  url: ""
+#  ssl_mode: disable
+#  path: grafana.db
+#  max_idle_conn: 2
+#  max_open_conn: ""
+#  log_queries: ""
+
+# Remote cache
+grafana_remote_cache: {}
+
+# User management and registration
+grafana_welcome_email_on_sign_up: false
+grafana_users:
+  allow_sign_up: false
+  # allow_org_create: true
+  # auto_assign_org: true
+  auto_assign_org_role: Viewer
+  # login_hint: "email or username"
+  default_theme: dark
+  # external_manage_link_url: ""
+  # external_manage_link_name: ""
+  # external_manage_info: ""
+
+# grafana authentication mechanisms
+grafana_auth: {}
+#  disable_login_form: false
+#  oauth_auto_login: false
+#  disable_signout_menu: false
+#  signout_redirect_url: ""
+#  anonymous:
+#    org_name: "Main Organization"
+#    org_role: Viewer
+#  ldap:
+#    config_file: "/etc/grafana/ldap.toml"
+#    allow_sign_up: false
+#  basic:
+#    enabled: true
+
+grafana_session: {}
+#  provider: file
+#  provider_config: "sessions"
+
+grafana_analytics: {}
+#  reporting_enabled: true
+#  google_analytics_ua_id: ""
+
+# Set this for mail notifications
+grafana_smtp: {}
+#  host:
+#  user:
+#  password:
+#  from_address:
+
+# Enable grafana alerting mechanism
+grafana_alerting:
+  execute_alerts: true
+#  error_or_timeout: 'alerting'
+#  nodata_or_nullvalues: 'no_data'
+#  concurrent_render_limit: 5
+
+# Grafana logging configuration
+grafana_log:
+# mode: 'console file'
+# level: info
+
+# Internal grafana metrics system
+grafana_metrics: {}
+#  interval_seconds: 10
+#  graphite:
+#    address: "localhost:2003"
+#    prefix: "prod.grafana.%(instance_name)s"
+
+# Distributed tracing options
+grafana_tracing: {}
+#  address: "localhost:6831"
+#  always_included_tag: "tag1:value1,tag2:value2"
+#  sampler_type: const
+#  sampler_param: 1
+
+grafana_snapshots: {}
+#  external_enabled: true
+#  external_snapshot_url: "https://snapshots-origin.raintank.io"
+#  external_snapshot_name: "Publish to snapshot.raintank.io"
+#  snapshot_remove_expired: true
+#  snapshot_TTL_days: 90
+
+# External image store
+grafana_image_storage: {}
+#  provider: gcs
+#  key_file:
+#  bucket:
+#  path:
+
+# Datasources to configure
+grafana_datasources:
+#  - name: "Prometheus"
+#    type: "prometheus"
+#    access: "proxy"
+#    url: "http://prometheus.mydomain"
+#    basicAuth: true
+#    basicAuthUser: "admin"
+#    basicAuthPassword: "password"
+#    isDefault: true
+#    jsonData:
+#      tlsAuth: false
+#      tlsAuthWithCACert: false
+#      tlsSkipVerify: true
+  - name: "Prometheus"
+    type: prometheus
+    isDefault: true
+    access: proxy
+    url: "http://prometheus:9090"
+    basicAuth: false
+
+# Panels configurations
+grafana_panels: {}
+#  disable_sanitize_html: false
+#  enable_alpha: false

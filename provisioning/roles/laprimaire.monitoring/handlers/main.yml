@@ -9,3 +9,8 @@
   shell: docker-compose restart prometheus
   args:
     chdir: /opt/monitoring
+
+- name: restart grafana
+  shell: docker-compose restart grafana
+  args:
+    chdir: /opt/monitoring

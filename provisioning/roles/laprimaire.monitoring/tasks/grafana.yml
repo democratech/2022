@@ -1,0 +1,91 @@
+---
+
+- name: create grafana mounted directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+  loop:
+    - "/data/grafana/"
+    - "{{ grafana_conf_dir }}"
+    - "{{ grafana_conf_dir }}/provisioning/datasources"
+    - "{{ grafana_conf_dir }}/provisioning/dashboards"
+    - "{{ grafana_conf_dir }}/provisioning/plugins"
+    - "{{ grafana_conf_dir }}/provisioning/notifiers"
+    - "{{ grafana_data_dir }}"
+    - "{{ grafana_data_dir }}/dashboards"
+    - "{{ grafana_logs_dir }}"
+
+- name: template grafana.ini
+  template:
+    src: grafana.ini.j2
+    dest: "{{ grafana_conf_dir }}/grafana.ini"
+  no_log: "{{ base_hostname != 'laprimaire.org.test' }}"
+  notify:
+    - restart grafana
+
+- when: grafana_use_provisioning
+  block:
+    - name: create/update dashboards file (provisioning)
+      become: true
+      copy:
+        dest: "{{ grafana_conf_dir }}/provisioning/dashboards/ansible.yml"
+        content: |
+          apiVersion: 1
+          providers:
+           - name: 'default'
+             orgId: 1
+             folder: ''
+             type: file
+             options:
+               path: "/var/lib/grafana/dashboards"
+        backup: false
+        mode: 0640
+      notify: restart grafana
+
+    - name: register previously copied dashboards
+      find:
+        paths: "{{ grafana_data_dir }}/dashboards"
+        hidden: true
+        patterns:
+          - "*.json"
+      register: _dashboards_present
+      when: grafana_provisioning_synced
+
+    - name: import grafana dashboards
+      become: true
+      copy:
+        src: "{{ item }}"
+        dest: "{{ grafana_data_dir }}/dashboards/{{ item | basename }}"
+      with_fileglob:
+        - "{{ grafana_dashboards_dir }}/*.json"
+      register: _dashboards_copied
+      notify: restart grafana
+
+    - name: get dashboard lists
+      set_fact:
+        _dashboards_present_list: "{{ _dashboards_present | json_query('files[*].path') | default([]) }}"
+        _dashboards_copied_list: "{{ _dashboards_copied | json_query('results[*].dest') | default([]) }}"
+      when: grafana_provisioning_synced
+
+    - name: remove dashboards not present on deployer machine (synchronize)
+      become: true
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "{{ _dashboards_present_list | difference( _dashboards_copied_list ) }}"
+      when: grafana_provisioning_synced
+      notify: restart grafana
+
+- name: create/update datasources file
+  become: true
+  copy:
+    dest: "{{ grafana_conf_dir }}/provisioning/datasources/ansible.yml"
+    content: |
+      apiVersion: 1
+      deleteDatasources: []
+      datasources:
+      {{ grafana_datasources | to_nice_yaml }}
+    backup: false
+  notify: restart grafana
+  when: grafana_use_provisioning

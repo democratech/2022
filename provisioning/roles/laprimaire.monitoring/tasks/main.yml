@@ -14,30 +14,9 @@
   loop:
     - /opt/monitoring
 
-- name: create mounted directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: u=rwx,g=rwx,o=rx
-  loop:
-    - /data/grafana/
-    - /data/prometheus/config
-    - /data/prometheus/config/rules
+- include: prometheus.yml
 
-- name: template prometheus.yml
-  template:
-    src: prometheus.yml.j2
-    dest: /data/prometheus/config/prometheus.yml
-  notify: restart prometheus
-
-- name: alerting rules file
-  template:
-    src: "alert.rules.j2"
-    dest: "/data/prometheus/config/rules/ansible_managed.rules"
-  when:
-    - prometheus_alert_rules != []
-  notify:
-    - restart prometheus
+- include: grafana.yml
 
 - name: template docker-compose.yml
   template:
