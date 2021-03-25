@@ -1,0 +1,72 @@
+---
+
+version: '3.3'
+
+services:
+    grafana:
+      image: grafana/grafana:{{ grafana_version }}
+      networks:
+        - grafana
+        - nginx_reverse-proxy
+      volumes:
+        - {{ grafana_data_dir }}:/var/lib/grafana
+        - {{ grafana_conf_dir }}:/etc/grafana
+        - {{ grafana_logs_dir }}:/var/log/grafana
+      environment:
+        VIRTUAL_HOST: "monitoring.{{ base_hostname }}"
+        VIRTUAL_PORT: {{ grafana_port }}
+      depends_on:
+        - prometheus
+    prometheus:
+      image: prom/prometheus:v{{ prometheus_version }}
+      networks:
+        - grafana
+        - prometheus
+{# Expose Prometheus only in the local dev env for debug purposes. #}
+{% if base_hostname == 'laprimaire.org.test' %}
+        - nginx_reverse-proxy
+{% endif %}
+      depends_on:
+        - node_exporter
+      volumes:
+        - /data/prometheus/config:/etc/prometheus
+        - /data/prometheus/data:/prometheus
+{# Expose Prometheus only in the local dev env for debug purposes. #}
+{% if base_hostname == 'laprimaire.org.test' %}
+      environment:
+        VIRTUAL_HOST: "prometheus.{{ base_hostname }}"
+        VIRTUAL_PORT: 9090
+{% endif %}
+    node_exporter:
+      image: prom/node-exporter:v1.1.2
+      networks:
+        - prometheus
+      volumes:
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /:/rootfs:ro
+      command: 
+        - '--path.procfs=/host/proc' 
+        - '--path.sysfs=/host/sys'
+        - --collector.systemd
+        - --collector.processes
+        - --collector.filesystem.ignored-mount-points
+        - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+      restart: unless-stopped
+    cadvisor:
+      image: google/cadvisor:v0.33.0
+      container_name: monitoring_cadvisor
+      restart: unless-stopped
+      volumes:
+        - /:/rootfs:ro
+        - /var/run:/var/run:rw
+        - /sys:/sys:ro
+        - /var/lib/docker/:/var/lib/docker:ro
+      networks:
+        - prometheus
+
+networks:
+  grafana:
+  prometheus:
+  nginx_reverse-proxy:
+    external: true

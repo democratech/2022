@@ -1,0 +1,28 @@
+---
+
+- name: create prometheus mounted directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: nobody
+    mode: u=rwx,g=rwx,o=rx
+  loop:
+    - /data/prometheus/data
+    - /data/prometheus/config
+    - /data/prometheus/config/rules
+  notify: restart prometheus
+
+- name: template prometheus.yml
+  template:
+    src: prometheus.yml.j2
+    dest: /data/prometheus/config/prometheus.yml
+  notify: restart prometheus
+
+- name: template prometheus alerting rules file
+  template:
+    src: alert.rules.j2
+    dest: /data/prometheus/config/rules/ansible_managed.rules
+  when:
+    - prometheus_alert_rules != []
+  notify:
+    - restart prometheus

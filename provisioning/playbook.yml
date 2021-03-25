@@ -48,6 +48,9 @@
     - role: laprimaire.analytics
       tags:
         - analytics
+    - role: laprimaire.monitoring
+      tags:
+        - monitoring
   tasks:
     - block:
       - name: Allow the HTTP (80) port

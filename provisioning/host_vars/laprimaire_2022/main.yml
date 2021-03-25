@@ -16,3 +16,6 @@ matomo_database_username: "{{ lookup('env', 'MATOMO_DATABASE_USER') | default('a
 matomo_database_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default('admin_42', true) }}"
 matomo_user: "{{ lookup('env', 'MATOMO_USER') | default('admin', true) }}"
 matomo_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default('admin_42', true) }}"
+
+grafana_admin_user: "{{ lookup('env', 'GRAFANA_ADMIN_USER') | default('admin', true) }}"
+grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') | default('admin', true) }}"
