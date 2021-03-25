@@ -1,0 +1,11 @@
+---
+
+- name: restart monitoring
+  shell: docker-compose restart
+  args:
+    chdir: /opt/monitoring
+
+- name: restart prometheus
+  shell: docker-compose restart prometheus
+  args:
+    chdir: /opt/monitoring

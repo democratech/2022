@@ -20,12 +20,24 @@ services:
       depends_on:
         - prometheus
     prometheus:
-      image: prom/prometheus:v2.25.2
+      image: prom/prometheus:v{{ prometheus_version }}
       networks:
         - grafana
         - prometheus
+# Expose Prometheus only in the local dev env.
+{% if base_hostname == 'laprimaire.org.test' %}
+        - nginx_reverse-proxy
+{% endif %}
       depends_on:
         - node_exporter
+      volumes:
+        - /data/prometheus/config:/etc/prometheus
+      environment:
+# Expose Prometheus only in the local dev env.
+{% if base_hostname == 'laprimaire.org.test' %}
+        VIRTUAL_HOST: "prometheus.{{ base_hostname }}"
+        VIRTUAL_PORT: 9090
+{% endif %}
     node_exporter:
       image: prom/node-exporter:v1.1.2
       networks:
