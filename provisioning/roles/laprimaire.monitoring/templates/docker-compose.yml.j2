@@ -1,0 +1,48 @@
+---
+
+version: '3.3'
+
+services:
+    grafana:
+      image: grafana/grafana:7.4.5
+      networks:
+        - grafana
+        - nginx_reverse-proxy
+      volumes:
+        - /data/grafana:/var/lib/grafana
+      environment:
+        GF_DEFAULT_INSTANCE_NAME: "LaPrimaire.org"
+        GF_SECURITY_ADMIN_USER: "admin"
+        GF_SECURITY_ADMIN_PASSWORD: "admin"
+        GF_USERS_ALLOW_SIGN_UP: "false"
+        VIRTUAL_HOST: "monitoring.{{ base_hostname }}"
+        VIRTUAL_PORT: 3000
+      depends_on:
+        - prometheus
+    prometheus:
+      image: prom/prometheus:v2.25.2
+      networks:
+        - grafana
+        - prometheus
+      depends_on:
+        - node_exporter
+    node_exporter:
+      image: prom/node-exporter:v1.1.2
+      networks:
+        - prometheus
+      volumes:
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /:/rootfs:ro
+      command: 
+        - '--path.procfs=/host/proc' 
+        - '--path.sysfs=/host/sys'
+        - --collector.filesystem.ignored-mount-points
+        - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+      restart: unless-stopped
+
+networks:
+  grafana:
+  prometheus:
+  nginx_reverse-proxy:
+    external: true
