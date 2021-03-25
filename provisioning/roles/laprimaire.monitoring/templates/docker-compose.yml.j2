@@ -22,7 +22,7 @@ services:
       networks:
         - grafana
         - prometheus
-# Expose Prometheus only in the local dev env for debug purposes.
+{# Expose Prometheus only in the local dev env for debug purposes. #}
 {% if base_hostname == 'laprimaire.org.test' %}
         - nginx_reverse-proxy
 {% endif %}
@@ -31,9 +31,9 @@ services:
       volumes:
         - /data/prometheus/config:/etc/prometheus
         - /data/prometheus/data:/prometheus
-      environment:
-# Expose Prometheus only in the local dev env for debug purposes.
+{# Expose Prometheus only in the local dev env for debug purposes. #}
 {% if base_hostname == 'laprimaire.org.test' %}
+      environment:
         VIRTUAL_HOST: "prometheus.{{ base_hostname }}"
         VIRTUAL_PORT: 9090
 {% endif %}
