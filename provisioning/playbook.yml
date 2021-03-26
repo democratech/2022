@@ -6,11 +6,14 @@
     - name: update apt cache
       apt:
         update_cache: yes
+      tags: always
   roles:
     - role: geerlingguy.pip
       pip_install_packages: ['docker', 'docker-compose']
+      tags: always
     - role: geerlingguy.docker
       docker_users: ["{{ ansible_ssh_user }}"]
+      tags: always
   tasks:
     - block:
       - name: Install fail2ban
@@ -39,6 +42,7 @@
     - laprimaire_2022
   roles:
     - role: laprimaire.reverse-proxy
+      tags: always
     - role: laprimaire.blog
       tags:
         - blog
