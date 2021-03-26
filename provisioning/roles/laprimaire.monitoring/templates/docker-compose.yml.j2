@@ -15,6 +15,7 @@ services:
       environment:
         VIRTUAL_HOST: "monitoring.{{ base_hostname }}"
         VIRTUAL_PORT: {{ grafana_port }}
+        LETSENCRYPT_HOST: "monitoring.{{ base_hostname }}"
       depends_on:
         - prometheus
     prometheus:
@@ -42,9 +43,11 @@ services:
       networks:
         - prometheus
       volumes:
-        - /proc:/host/proc:ro
-        - /sys:/host/sys:ro
         - /:/rootfs:ro
+        - /var/run:/var/run:ro
+        - /sys:/sys:ro
+        - /var/lib/docker/:/var/lib/docker:ro
+        - /dev/disk/:/dev/disk:ro
       command: 
         - '--path.procfs=/host/proc' 
         - '--path.sysfs=/host/sys'
