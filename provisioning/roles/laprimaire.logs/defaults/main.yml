@@ -1,0 +1,3 @@
+---
+
+kibana_fqdn: "logs.infra.{{ base_hostname }}"

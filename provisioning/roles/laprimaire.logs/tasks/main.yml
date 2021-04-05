@@ -1,0 +1,39 @@
+---
+
+- name: generate self-signed SSL certs
+  include_role:
+    name: laprimaire.ssl-certs
+  vars:
+    ssl_cert_fqdn: "{{ kibana_fqdn }}"
+  when: base_hostname != 'laprimaire.org'
+
+- name: create EFK directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/logs
+
+- name: create EFK mounted directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: u=rwx,g=rwx,o=rx
+  loop:
+    - /data/fluent-bit/config
+    - /data/elasticsearch/data
+
+- name: copy fluent-bit.conf
+  copy:
+    src: fluent-bit.conf
+    dest: /data/fluent-bit/config/fluent-bit.conf
+  notify: restart fluent-bit
+
+- name: template EFK docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/logs/docker-compose.yml
+
+- name: start EFK
+  docker_compose:
+    project_src: /opt/logs

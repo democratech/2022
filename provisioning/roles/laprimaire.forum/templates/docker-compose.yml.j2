@@ -11,6 +11,11 @@ services:
       - '/opt/discourse/postgresql-initdb.d:/docker-entrypoint-initdb.d'
     networks:
       - discourse
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
   redis:
     image: 'docker.io/bitnami/redis:{{ discourse_redis_version }}'
     restart: unless-stopped
@@ -20,6 +25,11 @@ services:
       - '/data/discourse/redis:/bitnami'
     networks:
       - discourse
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
   discourse:
     image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
     restart: unless-stopped
@@ -55,6 +65,11 @@ services:
     networks:
       - discourse
       - nginx_reverse-proxy
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
   sidekiq:
     image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
     restart: unless-stopped
@@ -81,6 +96,11 @@ services:
 {% endif %}
     networks:
       - discourse
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
 
 networks:
   discourse:

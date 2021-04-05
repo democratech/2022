@@ -1,3 +1,4 @@
 ---
 
-monitoring_fqdn: "monitoring.{{ base_hostname }}"
+monitoring_fqdn: "monitoring.infra.{{ base_hostname }}"
+metrics_fqdn: "metrics.infra.{{ base_hostname }}"
