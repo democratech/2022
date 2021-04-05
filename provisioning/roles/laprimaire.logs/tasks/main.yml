@@ -33,6 +33,7 @@
   template:
     src: docker-compose.yml.j2
     dest: /opt/logs/docker-compose.yml
+  notify: restart EFK
 
 - name: start EFK
   docker_compose:
