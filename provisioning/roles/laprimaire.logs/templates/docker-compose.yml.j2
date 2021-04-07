@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.6.2
+    environment:
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /data/elasticsearch/data/:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch
+  kibana:
+    image: kibana:7.6.2
+    depends_on:
+      - elasticsearch
+    networks:
+      - elasticsearch
+      - nginx_reverse-proxy
+    environment:
+      VIRTUAL_HOST: "{{ kibana_fqdn }}"
+      VIRTUAL_PORT: "5601"
+      LETSENCRYPT_HOST: "{{ kibana_fqdn }}"
+  fluent-bit:
+    image: fluent/fluent-bit:1.7.2
+    ports:
+      - 24224:24224
+      - 24224:24224/udp
+    command: /fluent-bit/bin/fluent-bit -c /fluent-bit/config/fluent-bit.conf
+    volumes:
+      - /data/fluent-bit/config/fluent-bit.conf:/fluent-bit/config/fluent-bit.conf
+    depends_on:
+      - elasticsearch
+    networks:
+      - elasticsearch
+
+networks:
+  elasticsearch:
+  nginx_reverse-proxy:
+    external: true

@@ -6,6 +6,9 @@
   vars:
     ssl_cert_fqdn: "{{ monitoring_fqdn }}"
   when: base_hostname != 'laprimaire.org'
+  loop:
+    - "{{ monitoring_fqdn }}"
+    - "{{ metrics_fqdn }}"
 
 - name: create directories
   file:

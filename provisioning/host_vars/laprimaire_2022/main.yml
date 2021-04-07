@@ -1,7 +1,5 @@
 ---
 
-base_hostname: laprimaire.org
-
 discourse_postgresql_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_PASSWORD') | default('postgres', true) }}"
 discourse_smtp_user: "{{ lookup('env', 'DISCOURSE_SMTP_USER') }}"
 discourse_smtp_password: "{{ lookup('env', 'DISCOURSE_SMTP_PASSWORD') }}"
@@ -19,3 +17,7 @@ matomo_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default('admin_42', true
 
 grafana_admin_user: "{{ lookup('env', 'GRAFANA_ADMIN_USER') | default('admin', true) }}"
 grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') | default('admin', true) }}"
+
+vouch_oauth_client_id: "{{ lookup('env', 'VOUCH_OAUTH_CLIENT_ID') }}"
+vouch_oauth_client_secret: "{{ lookup('env', 'VOUCH_OAUTH_CLIENT_SECRET') }}"
+vouch_whitelist: "{{ lookup('env', 'VOUCH_WHITELIST').split(',') }}"

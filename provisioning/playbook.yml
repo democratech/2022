@@ -1,7 +1,7 @@
 ---
 
 - hosts:
-    - all
+    - server
   pre_tasks:
     - name: update apt cache
       apt:
@@ -30,10 +30,18 @@
         ufw:
           state: enabled
           policy: deny
+        retries: 3
+        delay: 3
+        register: result
+        until: result is succeeded
       - name: Allow the SSH (22) port
         ufw:
           rule: allow
           port: '22'
+        retries: 3
+        delay: 3
+        register: result
+        until: result is succeeded
       tags:
         - security
         - firewall
@@ -42,7 +50,13 @@
     - laprimaire_2022
   roles:
     - role: laprimaire.reverse-proxy
-      tags: always
+      tags:
+        - always
+        - reverse-proxy
+    - role: laprimaire.logs
+      tags:
+        - always
+        - logs
     - role: laprimaire.blog
       tags:
         - blog
@@ -61,10 +75,18 @@
         ufw:
           rule: allow
           port: '80'
+        retries: 3
+        delay: 3
+        register: result
+        until: result is succeeded
       - name: Allow the HTTPS (443) port
         ufw:
           rule: allow
           port: '443'
+        retries: 3
+        delay: 3
+        register: result
+        until: result is succeeded
       tags:
         - security
         - firewall

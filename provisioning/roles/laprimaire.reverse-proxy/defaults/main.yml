@@ -1,9 +1,22 @@
 ---
 
-# https://hub.docker.com/r/jwilder/nginx-proxy/tags
+# https://hub.docker.com/r/jwilder/nginx-proxy/tags?page=1&ordering=last_updated
 nginx_proxy_version: 0.8.0
 
 nginx_proxy_letsencrypt_companion_enabled: "{{ base_hostname != 'laprimaire.org.test' }}"
-# https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/tags
+# https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/tags?page=1&ordering=last_updated
 nginx_proxy_letsencrypt_companion_version: 2.0.2
 nginx_proxy_letsencrypt_companion_email: admin@democratech.co
+
+# https://hub.docker.com/r/voucher/vouch-proxy/tags?page=1&ordering=last_updated
+vouch_version: 0.23.1
+vouch_enabled: "{{ base_hostname != 'laprimaire.org.test' }}"
+vouch_testing: false
+vouch_domains: "infra.{{ base_hostname }}"
+vouch_fqdn: "sso.{{ vouch_domains }}"
+vouch_whitelist: []
+vouch_cookie_domain: "{{ vouch_domains }}"
+vouch_oauth_provider: "github"
+vouch_oauth_client_id:
+vouch_oauth_client_secret:
+vouch_oauth_callback_url: "https://sso.infra.{{ base_hostname }}/auth"

@@ -12,13 +12,18 @@ services:
       - reverse-proxy
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
 {% if not nginx_proxy_letsencrypt_companion_enabled %}
       - /opt/nginx/certs:/etc/nginx/certs
 {% else %}
       - certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
 {% endif %}
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
 {% if nginx_proxy_letsencrypt_companion_enabled %}
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion:{{ nginx_proxy_letsencrypt_companion_version }}
@@ -31,11 +36,47 @@ services:
     environment:
       DEFAULT_EMAIL: "{{ nginx_proxy_letsencrypt_companion_email }}"
       NGINX_PROXY_CONTAINER: "nginx-proxy"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
+{% endif %}
+{% if vouch_enabled %}
+  vouch:
+    image: voucher/vouch-proxy:alpine-{{ vouch_version }}
+    networks:
+      - reverse-proxy
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
+    environment:
+{% if base_hostname == 'laprimaire.org.test' %}
+      VOUCH_LOGLEVEL: "debug"
+      VOUCH_TESTING: "{{ vouch_testing | ternary('true', 'false') }}"
+{% endif %}
+      VOUCH_DOMAINS: "{{ vouch_domains }}"
+      VOUCH_WHITELIST: "{{ vouch_whitelist | join(',') }}"
+      VOUCH_COOKIE_DOMAIN: "{{ vouch_cookie_domain }}"
+      OAUTH_PROVIDER: "{{ vouch_oauth_provider }}"
+      OAUTH_CLIENT_ID: "{{ vouch_oauth_client_id }}"
+      OAUTH_CLIENT_SECRET: "{{ vouch_oauth_client_secret }}"
+      OAUTH_CALLBACK_URL: "{{ vouch_oauth_callback_url }}"
+      VIRTUAL_HOST: "{{ vouch_fqdn }}"
+      VIRTUAL_PORT: "9090"
+      LETSENCRYPT_HOST: "{{ vouch_fqdn }}"
 {% endif %}
 
 volumes:
   certs:
   vhost:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /opt/nginx/vhost.d
   html:
 
 networks:

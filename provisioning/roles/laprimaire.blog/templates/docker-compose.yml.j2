@@ -23,6 +23,11 @@ services:
     networks:
       - nginx_reverse-proxy
       - ghost
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
   db:
     image: mysql:8.0.23
     restart: unless-stopped
@@ -37,6 +42,11 @@ services:
       - /opt/ghost/mysql-initdb.d:/docker-entrypoint-initdb.d
     networks:
       - ghost
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
 
 networks:
   ghost:

@@ -16,6 +16,11 @@ services:
       - "/data/matomo/mariadb:/bitnami/mariadb"
     networks:
       - matomo
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
   matomo:
     image: "docker.io/bitnami/matomo:{{ matomo_version }}"
     restart: unless-stopped
@@ -40,6 +45,11 @@ services:
       - nginx_reverse-proxy
     depends_on:
       - mariadb
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
 
 networks:
   matomo:
