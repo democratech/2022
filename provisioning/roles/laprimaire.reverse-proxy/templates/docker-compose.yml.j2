@@ -27,6 +27,7 @@ services:
 {% if nginx_proxy_letsencrypt_companion_enabled %}
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion:{{ nginx_proxy_letsencrypt_companion_version }}
+    restart: unless-stopped
     volumes:
       - certs:/etc/nginx/certs
       - vhost:/etc/nginx/vhost.d
@@ -45,6 +46,7 @@ services:
 {% if vouch_enabled %}
   vouch:
     image: voucher/vouch-proxy:alpine-{{ vouch_version }}
+    restart: unless-stopped
     networks:
       - reverse-proxy
     logging:
