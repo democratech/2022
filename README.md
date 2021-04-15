@@ -8,6 +8,7 @@
     - [1.3. Environment variables](#13-environment-variables)
     - [1.4. Provision the development VMs](#14-provision-the-development-vms)
     - [1.5. Adding/removing/upgrading 3rd party Ansible roles](#15-addingremovingupgrading-3rd-party-ansible-roles)
+    - [1.6. Pre-commit hook](#16-pre-commit-hook)
 - [2. Hosts](#2-hosts)
 - [3. Security](#3-security)
     - [3.1. SSL](#31-ssl)
@@ -134,6 +135,12 @@ ansible-galaxy install -r ./provisioning/requirements.yml -p ./provisioning/role
 
 4. Add the new roles (if any) to the git repository with `git add`, commit
 your changes with `git commit` and then push them wight `git push`.
+
+### 1.6. Pre-commit hook
+
+This repository provides a pre-commit hook running `ansible-lint`, to use it:
+- Install [pre-commit](https://pre-commit.com).
+- Run `pre-commit install`.
 
 ## 2. Hosts
 
