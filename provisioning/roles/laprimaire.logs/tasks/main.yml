@@ -12,7 +12,7 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/logs
+    - /srv/logs
 
 - name: create EFK mounted directories
   file:
@@ -32,9 +32,9 @@
 - name: template EFK docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/logs/docker-compose.yml
+    dest: /srv/logs/docker-compose.yml
   notify: restart EFK
 
 - name: start EFK
   docker_compose:
-    project_src: /opt/logs
+    project_src: /srv/logs

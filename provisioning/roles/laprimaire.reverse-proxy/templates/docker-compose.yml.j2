@@ -15,7 +15,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
 {% if not nginx_proxy_letsencrypt_companion_enabled %}
-      - /opt/nginx/certs:/etc/nginx/certs
+      - /srv/nginx/certs:/etc/nginx/certs
 {% else %}
       - certs:/etc/nginx/certs
 {% endif %}
@@ -78,7 +78,7 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /opt/nginx/vhost.d
+      device: /srv/nginx/vhost.d
   html:
 
 networks:

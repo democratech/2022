@@ -15,7 +15,7 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/monitoring
+    - /srv/monitoring
 
 - include: prometheus.yml
 
@@ -24,8 +24,8 @@
 - name: template docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/monitoring/docker-compose.yml
+    dest: /srv/monitoring/docker-compose.yml
 
 - name: start monitoring
   docker_compose:
-    project_src: /opt/monitoring
+    project_src: /srv/monitoring

@@ -12,8 +12,8 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/discourse
-    - /opt/discourse/postgresql-initdb.d
+    - /srv/discourse
+    - /srv/discourse/postgresql-initdb.d
     - /data/discourse/persistence/discourse/public/uploads
 
 - name: create discourse mounted directories
@@ -34,11 +34,11 @@
 - name: copy discourse database
   copy:
     src: ./postgresql-initdb.d/
-    dest: /opt/discourse/postgresql-initdb.d
+    dest: /srv/discourse/postgresql-initdb.d
 
 - name: check if 01-discourse.sql exists
   stat:
-    path: /opt/discourse/postgresql-initdb.d/01-discourse.sql
+    path: /srv/discourse/postgresql-initdb.d/01-discourse.sql
   register: discourse_sql
 
 - name: set discourse_skip_install
@@ -48,8 +48,8 @@
 - name: template discourse docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/discourse/docker-compose.yml
+    dest: /srv/discourse/docker-compose.yml
 
 - name: start discourse
   docker_compose:
-    project_src: /opt/discourse
+    project_src: /srv/discourse
