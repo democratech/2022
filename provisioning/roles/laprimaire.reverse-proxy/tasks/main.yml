@@ -12,26 +12,26 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/nginx
-    - /opt/nginx/certs
-    - /opt/nginx/vhost.d
+    - /srv/nginx
+    - /srv/nginx/certs
+    - /srv/nginx/vhost.d
 
 - name: template nginx docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/nginx/docker-compose.yml
+    dest: /srv/nginx/docker-compose.yml
   notify: restart nginx-proxy
 
 - name: enable vouch vhosts
   block:
     - template:
         src: vouch.conf.j2
-        dest: "/opt/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
+        dest: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
     - template:
         src: vouch_location.conf.j2
-        dest: "/opt/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
+        dest: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
   when: vouch_enabled | bool
@@ -39,12 +39,12 @@
 - name: disable vouch vhosts
   block:
     - file:
-        path: "/opt/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
+        path: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
         state: absent
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
     - file:
-        path: "/opt/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
+        path: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
         state: absent
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
@@ -52,4 +52,4 @@
 
 - name: start nginx reverse-proxy
   docker_compose:
-    project_src: /opt/nginx
+    project_src: /srv/nginx

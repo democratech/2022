@@ -12,7 +12,7 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/matomo
+    - /srv/matomo
     - /data/matomo/
 
 - name: create matomo mounted directories
@@ -27,8 +27,8 @@
 - name: template matomo docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/matomo/docker-compose.yml
+    dest: /srv/matomo/docker-compose.yml
 
 - name: start matomo
   docker_compose:
-    project_src: /opt/matomo
+    project_src: /srv/matomo

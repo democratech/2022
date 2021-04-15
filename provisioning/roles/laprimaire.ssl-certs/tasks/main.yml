@@ -5,9 +5,9 @@
     name: openssl
     state: present
 
-- name: create /opt/nginx/certs
+- name: create /srv/nginx/certs
   file:
-    path: /opt/nginx/certs
+    path: /srv/nginx/certs
     state: directory
 
 - name: create self-signed certificate
@@ -15,7 +15,7 @@
     openssl req -new -nodes -x509 -extensions v3_ca \
       -subj "/C=FR/ST=IdF/L=Paris/O=IT/CN={{ ssl_cert_fqdn }}" \
       -days 3650 \
-      -keyout /opt/nginx/certs/{{ ssl_cert_fqdn }}.key \
-      -out /opt/nginx/certs/{{ ssl_cert_fqdn }}.crt 
+      -keyout /srv/nginx/certs/{{ ssl_cert_fqdn }}.key \
+      -out /srv/nginx/certs/{{ ssl_cert_fqdn }}.crt 
   args:
-    creates: "/opt/nginx/certs/{{ ssl_cert_fqdn }}.crt"
+    creates: "/srv/nginx/certs/{{ ssl_cert_fqdn }}.crt"

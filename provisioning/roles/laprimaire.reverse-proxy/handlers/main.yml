@@ -3,4 +3,4 @@
 - name: restart nginx-proxy
   shell: docker-compose restart nginx-proxy
   args:
-    chdir: /opt/nginx
+    chdir: /srv/nginx

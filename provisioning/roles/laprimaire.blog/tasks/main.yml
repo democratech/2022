@@ -12,15 +12,15 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - /opt/ghost
-    - /opt/ghost/mysql-initdb.d
+    - /srv/ghost
+    - /srv/ghost/mysql-initdb.d
     - /data/ghost/content
     - /data/ghost/mysql
 
 - name: template ghost docker-compose.yml
   template:
     src: docker-compose.yml.j2
-    dest: /opt/ghost/docker-compose.yml
+    dest: /srv/ghost/docker-compose.yml
 
 # ! FIXME: must be a symlink when working locally
 - name: copy ghost content
@@ -38,8 +38,8 @@
 - name: copy ghost database
   copy:
     src: ./mysql-initdb.d/
-    dest: /opt/ghost/mysql-initdb.d
+    dest: /srv/ghost/mysql-initdb.d
 
 - name: start ghost
   docker_compose:
-    project_src: /opt/ghost
+    project_src: /srv/ghost

@@ -3,9 +3,9 @@
 - name: restart EFK
   shell: docker-compose restart
   args:
-    chdir: /opt/logs
+    chdir: /srv/logs
 
 - name: restart fluent-bit
   shell: docker-compose restart fluent-bit
   args:
-    chdir: /opt/logs
+    chdir: /srv/logs

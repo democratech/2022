@@ -39,7 +39,7 @@ services:
       MYSQL_DATABASE: "{{ ghost_db_database }}"
     volumes:
       - /data/ghost/mysql:/var/lib/mysql
-      - /opt/ghost/mysql-initdb.d:/docker-entrypoint-initdb.d
+      - /srv/ghost/mysql-initdb.d:/docker-entrypoint-initdb.d
     networks:
       - ghost
     logging:
