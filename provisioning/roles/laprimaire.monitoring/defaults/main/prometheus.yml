@@ -51,6 +51,11 @@ prometheus_scrape_configs:
     static_configs:
       - targets:
         - "node_exporter:9100"
+  - job_name: "cadvisor"
+    metrics_path: /metrics
+    scrape_interval: 15s
+    static_configs:
+      - targets:
         - "cadvisor:8080"
 
 prometheus_alert_rules:
