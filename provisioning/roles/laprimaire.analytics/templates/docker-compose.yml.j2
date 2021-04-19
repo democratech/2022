@@ -21,6 +21,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "analytics"
   matomo:
     image: "docker.io/bitnami/matomo:{{ matomo_version }}"
     restart: unless-stopped
@@ -50,6 +52,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "analytics"
 
 networks:
   matomo:

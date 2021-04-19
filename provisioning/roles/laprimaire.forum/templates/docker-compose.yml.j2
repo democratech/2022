@@ -16,6 +16,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "forum"
   redis:
     image: 'docker.io/bitnami/redis:{{ discourse_redis_version }}'
     restart: unless-stopped
@@ -30,6 +32,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "forum"
   discourse:
     image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
     restart: unless-stopped
@@ -70,6 +74,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "forum"
   sidekiq:
     image: 'docker.io/bitnami/discourse:{{ discourse_version }}'
     restart: unless-stopped
@@ -101,6 +107,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "forum"
 
 networks:
   discourse:
