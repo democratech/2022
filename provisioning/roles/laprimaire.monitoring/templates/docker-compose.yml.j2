@@ -24,6 +24,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "monitoring"
   prometheus:
     image: prom/prometheus:v{{ prometheus_version }}
     restart: unless-stopped
@@ -45,6 +47,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "monitoring"
   node_exporter:
     image: prom/node-exporter:v1.1.2
     restart: unless-stopped
@@ -64,6 +68,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "monitoring"
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.38.8
     command:
@@ -90,6 +96,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "monitoring"
 
 networks:
   grafana:

@@ -15,6 +15,8 @@ services:
       - /data/elasticsearch/data/:/usr/share/elasticsearch/data
     networks:
       - elasticsearch
+    labels:
+      org.label-schema.group: "logs"
   kibana:
     image: kibana:7.6.2
     restart: unless-stopped
@@ -27,6 +29,8 @@ services:
       VIRTUAL_HOST: "{{ kibana_fqdn }}"
       VIRTUAL_PORT: "5601"
       LETSENCRYPT_HOST: "{{ kibana_fqdn }}"
+    labels:
+      org.label-schema.group: "logs"
   fluent-bit:
     image: fluent/fluent-bit:1.7.2
     restart: unless-stopped
@@ -40,6 +44,8 @@ services:
       - elasticsearch
     networks:
       - elasticsearch
+    labels:
+      org.label-schema.group: "logs"
 
 networks:
   elasticsearch:

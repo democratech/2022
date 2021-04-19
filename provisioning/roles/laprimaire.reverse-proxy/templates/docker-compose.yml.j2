@@ -24,6 +24,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "reverse-proxy"
 {% if nginx_proxy_letsencrypt_companion_enabled %}
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion:{{ nginx_proxy_letsencrypt_companion_version }}
@@ -42,6 +44,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "reverse-proxy"
 {% endif %}
 {% if vouch_enabled %}
   vouch:
@@ -54,6 +58,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "reverse-proxy"
     environment:
 {% if base_hostname == 'laprimaire.org.test' %}
       VOUCH_LOGLEVEL: "debug"

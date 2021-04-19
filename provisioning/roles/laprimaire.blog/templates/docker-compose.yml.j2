@@ -28,6 +28,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "blog"
   db:
     image: mysql:8.0.23
     restart: unless-stopped
@@ -47,6 +49,8 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+    labels:
+      org.label-schema.group: "blog"
 
 networks:
   ghost:
