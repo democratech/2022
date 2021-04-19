@@ -24,6 +24,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "monitoring"
   prometheus:
@@ -47,6 +48,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "monitoring"
   node_exporter:
@@ -68,6 +70,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "monitoring"
   cadvisor:
@@ -96,6 +99,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "monitoring"
 

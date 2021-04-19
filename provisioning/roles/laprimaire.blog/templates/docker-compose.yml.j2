@@ -28,6 +28,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "blog"
   db:
@@ -49,6 +50,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "blog"
 

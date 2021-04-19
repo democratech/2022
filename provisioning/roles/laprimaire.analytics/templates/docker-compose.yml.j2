@@ -21,6 +21,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "analytics"
   matomo:
@@ -52,6 +53,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "analytics"
 

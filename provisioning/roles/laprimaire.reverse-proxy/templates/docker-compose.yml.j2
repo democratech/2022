@@ -24,6 +24,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "reverse-proxy"
 {% if nginx_proxy_letsencrypt_companion_enabled %}
@@ -44,6 +45,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "reverse-proxy"
 {% endif %}
@@ -58,6 +60,7 @@ services:
       options:
         fluentd-address: "localhost:24224"
         fluentd-async: "true"
+        labels: "org.label-schema.group"
     labels:
       org.label-schema.group: "reverse-proxy"
     environment:
