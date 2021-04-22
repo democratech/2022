@@ -1,3 +1,4 @@
+{{ ansible_managed | comment }}
 ---
 
 version: '3.3'
@@ -60,7 +61,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    command: 
+    command:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
