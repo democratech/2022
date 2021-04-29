@@ -1,6 +1,6 @@
 ---
 
 - name: restart ghost
-  shell: docker-compose restart
+  command: docker-compose restart
   args:
     chdir: /srv/ghost
