@@ -16,6 +16,6 @@
       -subj "/C=FR/ST=IdF/L=Paris/O=IT/CN={{ ssl_cert_fqdn }}" \
       -days 3650 \
       -keyout /srv/nginx/certs/{{ ssl_cert_fqdn }}.key \
-      -out /srv/nginx/certs/{{ ssl_cert_fqdn }}.crt 
+      -out /srv/nginx/certs/{{ ssl_cert_fqdn }}.crt
   args:
     creates: "/srv/nginx/certs/{{ ssl_cert_fqdn }}.crt"

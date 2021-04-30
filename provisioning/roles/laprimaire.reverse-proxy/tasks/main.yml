@@ -24,12 +24,14 @@
 
 - name: enable vouch vhosts
   block:
-    - template:
+    - name: create vouch.conf
+      template:
         src: vouch.conf.j2
         dest: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
-    - template:
+    - name: create vouch_location.conf
+      template:
         src: vouch_location.conf.j2
         dest: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
       loop: "{{ groups['infra'] }}"
@@ -38,12 +40,14 @@
 
 - name: disable vouch vhosts
   block:
-    - file:
+    - name: delete vouch.conf
+      file:
         path: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}"
         state: absent
       loop: "{{ groups['infra'] }}"
       notify: restart nginx-proxy
-    - file:
+    - name: delete vouch_location.conf
+      file:
         path: "/srv/nginx/vhost.d/{{ hostvars[item]['ansible_host'] }}_location"
         state: absent
       loop: "{{ groups['infra'] }}"

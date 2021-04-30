@@ -1,6 +1,6 @@
 ---
 
 - name: restart nginx-proxy
-  shell: docker-compose restart nginx-proxy
+  command: docker-compose restart nginx-proxy
   args:
     chdir: /srv/nginx

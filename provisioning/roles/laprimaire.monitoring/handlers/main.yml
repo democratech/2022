@@ -1,16 +1,16 @@
 ---
 
 - name: restart monitoring
-  shell: docker-compose restart
+  command: docker-compose restart
   args:
     chdir: /srv/monitoring
 
 - name: restart prometheus
-  shell: docker-compose restart prometheus
+  command: docker-compose restart prometheus
   args:
     chdir: /srv/monitoring
 
 - name: restart grafana
-  shell: docker-compose restart grafana
+  command: docker-compose restart grafana
   args:
     chdir: /srv/monitoring

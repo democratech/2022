@@ -1,0 +1,7 @@
+---
+exclude_paths:
+  - provisioning/roles/geerlingguy.docker/
+  - provisioning/roles/geerlingguy.pip/
+
+skip_list:
+  - '204' # Ignore error [204] Lines should be no longer than 160 chars
