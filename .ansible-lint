@@ -4,4 +4,6 @@ exclude_paths:
   - provisioning/roles/geerlingguy.pip/
 
 skip_list:
-  - '204' # Ignore error [204] Lines should be no longer than 160 chars
+  - '106' # Ignore error [106] Role name does not match ^[a-z][a-z0-9_]+$ pattern.
+  - '204' # Ignore error [204] Lines should be no longer than 160 chars.
+  - '208' # Ignore error [208] File permissions unset or incorrect.
