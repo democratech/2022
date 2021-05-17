@@ -47,6 +47,9 @@ services:
       - elasticsearch
     labels:
       org.label-schema.group: "logs"
+    logging:
+      options:
+        max-size: 100m
 
 networks:
   elasticsearch:
