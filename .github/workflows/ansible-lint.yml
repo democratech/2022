@@ -39,8 +39,11 @@ jobs:
           provisioning/roles/laprimaire.blog/handlers/main.yml
           provisioning/roles/laprimaire.forum/tasks/main.yml
           provisioning/roles/laprimaire.forum/defaults/main.yml
-          provisioning/hosts.yml
-          provisioning/host_vars/laprimaire_2022/main.yml
+          provisioning/inventories/development/hosts_var/laprimaire_2022/main.yml
+          provisioning/inventories/development/hosts.yml
+          provisioning/inventories/production/hosts_var/laprimaire_2022/main.yml
+          provisioning/inventories/production/hosts_var/laprimaire_2022/vault_main.yml
+          provisioning/inventories/production/hosts.yml
           provisioning/group_vars/all/main.yml
         # FIXME
         # Fixing the version of ansible is broken at the moment:

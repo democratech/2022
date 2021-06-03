@@ -1,0 +1,23 @@
+---
+
+discourse_postgresql_password: "{{ lookup('env', 'DISCOURSE_POSTGRESQL_PASSWORD') | default(vault_discourse_postgresql_password, true) }}"
+discourse_smtp_user: "{{ lookup('env', 'DISCOURSE_SMTP_USER') | default(vault_discourse_smtp_user, true) }}"
+discourse_smtp_password: "{{ lookup('env', 'DISCOURSE_SMTP_PASSWORD') | default(vault_discourse_smtp_password, true) }}"
+discourse_smtp_tls: "{{ lookup('env', 'DISCOURSE_SMTP_TLS') | default('true', true) }}"
+discourse_redis_password: "{{ lookup('env', 'DISCOURSE_REDIS_PASSWORD') | default(vault_discourse_redis_password, true) }}"
+
+ghost_database_user: "{{ lookup('env', 'GHOST_DATABASE_USER') | default(vault_ghost_database_user, true) }}"
+ghost_database_password: "{{ lookup('env', 'GHOST_DATABASE_PASSWORD') | default(vault_ghost_database_password, true) }}"
+
+matomo_database_root_password: "{{ lookup('env', 'MATOMO_DATABASE_ROOT_PASSWORD') | default(vault_matomo_database_root_password, true) }}"
+matomo_database_username: "{{ lookup('env', 'MATOMO_DATABASE_USER') | default(vault_matomo_database_username, true) }}"
+matomo_database_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default(vault_matomo_database_password, true) }}"
+matomo_user: "{{ lookup('env', 'MATOMO_USER') | default(vault_matomo_user, true) }}"
+matomo_password: "{{ lookup('env', 'MATOMO_PASSWORD') | default(vault_matomo_password, true) }}"
+
+grafana_admin_user: "{{ lookup('env', 'GRAFANA_ADMIN_USER') | default(vault_grafana_admin_user, true) }}"
+grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') | default(vault_grafana_admin_password, true) }}"
+
+vouch_oauth_client_id: "{{ lookup('env', 'VOUCH_OAUTH_CLIENT_ID') | default(vault_vouch_oauth_client_id, true) }}"
+vouch_oauth_client_secret: "{{ lookup('env', 'VOUCH_OAUTH_CLIENT_SECRET') | default(vault_vouch_oauth_client_secret, true) }}"
+vouch_whitelist: "{{ lookup('env', 'VOUCH_WHITELIST').split(',') | default(vault_vouch_whitelist, true) }}"
