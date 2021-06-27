@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Lint Ansible Playbook
-      uses: ansible/ansible-lint-action@c37fb7b4bda2c8cb18f4942716bae9f11b0dc9bc
+      uses: iranzo/ansible-lint-action@v4.1.1
       with:
         # FIXME
         # Globbing is broken at the moment:
@@ -42,10 +42,7 @@ jobs:
           provisioning/hosts.yml
           provisioning/host_vars/laprimaire_2022/main.yml
           provisioning/group_vars/all/main.yml
-        # FIXME
-        # Fixing the version of ansible is broken at the moment:
-        # https://github.com/ansible/ansible-lint-action/issues/41
-        #override-deps: |
-        #  ansible==2.9
-        #  ansible-lint==4.3.7
+        override-deps: |
+          ansible==2.9
+          ansible-lint==4.3.7
         args: ""
