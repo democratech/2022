@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
       ansible.raw_arguments = ENV['ANSIBLE_EXTRA_ARGS']
       ansible.config_file = "provisioning/ansible.cfg"
       ansible.playbook = "provisioning/playbook.yml"
-      ansible.inventory_path = "provisioning/hosts.yml"
+      ansible.inventory_path = "provisioning/inventories/development/hosts.yml"
       ansible.become = true
       ansible.playbook_command = "/vagrant/script/ansible-playbook.sh"
       ansible.extra_vars = {
